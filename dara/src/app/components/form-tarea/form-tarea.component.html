@@ -1,0 +1,56 @@
+<mat-card>
+  <form [formGroup]="form" *ngIf="form" class="formulario">
+    <!-- Proyecto-->
+    <div class="col proyecto">
+      <mat-form-field appearance="fill" class="formControl">
+        <mat-label>Proyecto</mat-label>
+        <mat-select formControlName="idProyecto">
+          <mat-option *ngFor="let proyecto of proyectos" [value]="proyecto.id">
+            {{ proyecto.nombre }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matPrefix>format_list_bulleted</mat-icon>
+      </mat-form-field>
+    </div>
+    <!-- Fecha -->
+    <div class="col fechaDesde">
+      <mat-form-field appearance="fill" class="formControl">
+        <mat-label>Fecha</mat-label>
+        <input
+          matInput
+          class="textColor"
+          [matDatepicker]="picker"
+          formControlName="fecha"
+          [placeholder]="'dd/mm/yyyy'"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker color="primary"></mat-datepicker>
+        <mat-error *ngIf="form.controls.fecha.invalid">
+          El valor ingresado no es válido.
+        </mat-error>
+      </mat-form-field>
+    </div>
+    
+    <!--Descripción-->
+    <div class="descripcion">
+      <mat-form-field appearance="fill" class="formControl">
+        <mat-label>Descripción tarea</mat-label>
+        <input
+          [placeholder]="'Digite la descripción'"
+          formControlName="descripcion"
+          matInput
+          type="text"
+          [maxlength]="100"
+        />
+        <mat-icon matPrefix> bubble_chart </mat-icon>
+      </mat-form-field>
+    </div>
+
+    <br *ngIf="form.invalid && !form.hasError('camposRequeridos')" />
+    <div *ngIf="form.hasError('camposRequeridos')">
+      <mat-hint>
+        <small class="mat-error">{{ form.getError("camposRequeridos") }}</small>
+      </mat-hint>
+    </div>
+  </form>
+</mat-card>

@@ -1,1 +1,37 @@
-<p>main-page works!</p>
+<mat-card class="title-card-h">
+  <mat-card-header>
+    <mat-card-title>{{
+      seccion == "tareas" ? "Mis tareas" : "Mis proyectos"
+    }}</mat-card-title>
+  </mat-card-header>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <!--Tabs de Tareas y Proyectos-->
+    <mat-tab-group #tabGroup>
+      <!-- tab tareas -->
+
+      <mat-tab label="tareas">
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">assignment</mat-icon>
+          Tareas
+        </ng-template>
+        <div class="tabConfig">
+          <app-tareas></app-tareas>
+        </div>
+      </mat-tab>
+
+      <!-- tab proyectos -->
+      <mat-tab label="proyectos">
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">dashboard</mat-icon>
+          Proyectos
+        </ng-template>
+        <div class="tabConfig">
+          <app-proyectos></app-proyectos>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>

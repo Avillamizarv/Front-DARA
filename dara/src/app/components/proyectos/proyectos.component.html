@@ -1,0 +1,101 @@
+<mat-card class="container">
+  <div class="actions-header">
+    <button
+      mat-raised-button
+      class="derecha"
+      color="primary"
+      [title]="'Agregar proyecto'"
+      [disabled]="true"
+    >
+      <mat-icon matPrefix>add</mat-icon>Agregar proyecto
+    </button>
+  </div>
+  <mat-card-content class="bordered">
+    <!--Campo de filtro-->
+    <form [formGroup]="form" *ngIf="form" class="formulario">
+      <!--Descripción-->
+      <div class="descripcion">
+        <mat-form-field appearance="fill" class="formControl">
+          <mat-label>Filtrar</mat-label>
+          <input
+            [placeholder]="'Ingrese el nombre o fecha de registro del proyecto'"
+            formControlName="filtro"
+            matInput
+            type="text"
+            [maxlength]="100"
+          />
+        </mat-form-field>
+      </div>
+    </form>
+    <!-- Table -->
+    <div class="row mat-elevation-z8">
+      <mat-table
+        mat-table
+        class="full-width-table"
+        [dataSource]="dataSource"
+        matSort
+      >
+        <!-- Proyecto -->
+        <ng-container matColumnDef="proyecto">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+            Proyecto
+          </mat-header-cell>
+          <mat-cell
+            mat-cell
+            *matCellDef="let row"
+            [attr.data-label]="'Proyecto'"
+          >
+            {{ row.nombre | uppercase }}
+          </mat-cell>
+        </ng-container>
+        <!-- Fecha registro -->
+        <ng-container matColumnDef="fechaRegistro">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+            Fecha registro
+          </mat-header-cell>
+          <mat-cell
+            mat-cell
+            *matCellDef="let row"
+            [attr.data-label]="'Fecha registro'"
+          >
+            {{ row.fechaRegistro | date : "dd/MM/yyyy" }}
+          </mat-cell>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell
+            mat-header-cell
+            *matHeaderCellDef
+            class="d-flex justify-content-center acciones-c"
+            >Acciones</mat-header-cell
+          >
+          <mat-cell
+            mat-cell
+            *matCellDef="let row"
+            [attr.data-label]="'Acciones'"
+            class="d-flex justify-content-center acciones-c"
+          >
+            <button
+              mat-mini-fab
+              color="primary"
+              [title]="'Inactivar'"
+              class="actionBtn"
+            >
+              <mat-icon>clear</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row
+          mat-header-row
+          *matHeaderRowDef="displayedColumns"
+        ></mat-header-row>
+        <mat-row
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          [ngClass]="{ highlight: selectedRowIndex === row.id }"
+        ></mat-row
+      ></mat-table>
+    </div>
+  </mat-card-content>
+</mat-card>

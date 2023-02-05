@@ -1,0 +1,31 @@
+
+.formulario {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(170px, auto));
+  grid-auto-rows: minmax(10px, auto);
+  grid-gap: 12px;
+  grid-row-gap: 8px;
+  margin-bottom: 8px;
+  padding-top: 10px;
+}
+.acciones-busqueda {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 16px;
+  button:first-child {
+    color:  #128178;
+    border-color:  #128178;
+  }
+}
+@media screen and (max-width: 870px) {
+  .formulario {
+    grid-template-columns: repeat(2, minmax(170px, auto));
+  }
+}
+@media screen and (max-width: 500px) {
+  .formulario {
+    grid-template-columns: repeat(1, minmax(170px, auto));
+  }
+}

@@ -1,0 +1,215 @@
+<mat-card class="container">
+  <div class="actions-header">
+    <button
+      mat-raised-button
+      class="derecha"
+      color="primary"
+      [title]="'Agregar tarea'"
+      (click)="agregarTarea()"
+    >
+      <mat-icon matPrefix>add</mat-icon>Agregar tarea
+    </button>
+  </div>
+  <mat-card-content class="bordered">
+    <!--Criterios de búsqueda-->
+    <mat-card class="border">
+      <div>
+        <form [formGroup]="form" *ngIf="form" class="formulario">
+          <!-- Proyecto-->
+          <div class="col proyecto">
+            <mat-form-field appearance="fill" class="formControl">
+              <mat-label>Proyecto</mat-label>
+              <mat-select formControlName="idProyecto">
+                <mat-option
+                  *ngFor="let proyecto of proyectos"
+                  [value]="proyecto.id"
+                >
+                  {{ proyecto.nombre }}
+                </mat-option>
+              </mat-select>
+              <mat-icon matPrefix>format_list_bulleted</mat-icon>
+            </mat-form-field>
+          </div>
+          <!-- Fecha desde a partir de -->
+          <div class="col fechaDesde">
+            <mat-form-field appearance="fill" class="formControl">
+              <mat-label>Fecha desde</mat-label>
+              <input
+                matInput
+                class="textColor"
+                [matDatepicker]="picker"
+                formControlName="fechaDesde"
+                [placeholder]="'dd/mm/yyyy'"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker color="primary"></mat-datepicker>
+              <mat-error *ngIf="form.controls.fechaDesde.invalid">
+                El valor ingresado no es válido.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <!-- Fecha desde menor o igual a -->
+          <div class="col fechaHasta">
+            <mat-form-field appearance="fill" class="formControl">
+              <mat-label>Fecha hasta</mat-label>
+              <input
+                matInput
+                class="textColor"
+                [matDatepicker]="picker2"
+                formControlName="fechaHasta"
+                [min]="form.controls.fechaDesde.value"
+                [placeholder]="'dd/mm/yyyy'"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker2"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+              <mat-error *ngIf="form.controls.fechaHasta.invalid">
+                {{
+                  form.controls.fechaHasta.getError("matDatepickerMin")
+                    ? "Fecha hasta debe ser mayor o igual a fecha desde."
+                    : "El valor ingresado no es válido."
+                }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <!--Descripción-->
+          <div class="descripcion">
+            <mat-form-field appearance="fill" class="formControl">
+              <mat-label>Descripción tarea</mat-label>
+              <input
+                [placeholder]="'Digite la descripción'"
+                formControlName="descripcion"
+                matInput
+                type="text"
+                [maxlength]="100"
+              />
+              <mat-icon matPrefix> bubble_chart </mat-icon>
+            </mat-form-field>
+          </div>
+
+          <br *ngIf="form.invalid && !form.hasError('camposRequeridos')" />
+          <div *ngIf="form.hasError('camposRequeridos')">
+            <mat-hint>
+              <small class="mat-error">{{
+                form.getError("camposRequeridos")
+              }}</small>
+            </mat-hint>
+          </div>
+        </form>
+        <mat-divider></mat-divider>
+        <div class="acciones-busqueda">
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="limpiarFormulario()"
+            [title]="'Limpiar consulta'"
+          >
+            Limpiar consulta
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="button"
+            [title]="'Consultar'"
+            (click)="buscar()"
+          >
+            Consultar
+          </button>
+        </div>
+      </div>
+    </mat-card>
+    <!-- Table -->
+    <div class="row mat-elevation-z8">
+      <mat-table
+        mat-table
+        class="full-width-table"
+        [dataSource]="dataSource"
+        matSort
+      >
+        <!-- Proyecto -->
+        <ng-container matColumnDef="nombreProyecto">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+            Proyecto
+          </mat-header-cell>
+          <mat-cell
+            mat-cell
+            *matCellDef="let row"
+            [attr.data-label]="'Proyecto'"
+          >
+            {{ row.nombreProyecto | uppercase }}
+          </mat-cell>
+        </ng-container>
+        <!-- Fecha -->
+        <ng-container matColumnDef="fecha">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+            Fecha
+          </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let row" [attr.data-label]="'Fecha'">
+            {{ row.fecha | date: "dd/MM/yyyy" }}
+          </mat-cell>
+        </ng-container>
+        <!-- Descripción -->
+        <ng-container matColumnDef="descripcion">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+            Descripción tarea
+          </mat-header-cell>
+          <mat-cell
+            mat-cell
+            *matCellDef="let row"
+            [attr.data-label]="'Descripción tarea'"
+          >
+            {{ row.descripcion }}
+          </mat-cell>
+        </ng-container>
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell
+            mat-header-cell
+            *matHeaderCellDef
+            class="d-flex justify-content-center acciones-c"
+            >Acciones</mat-header-cell
+          >
+          <mat-cell
+            mat-cell
+            *matCellDef="let row"
+            [attr.data-label]="'Acciones'"
+            class="d-flex justify-content-center acciones-c"
+          >
+            <button
+              mat-mini-fab
+              color="primary"
+              [title]="'Inactivar'"
+              class="actionBtn"
+              (click)="inactivarTarea(row)"
+            >
+              <mat-icon>clear</mat-icon>
+            </button>
+            <button
+              mat-mini-fab
+              color="primary"
+              [title]="'Finalizar'"
+              class="actionBtn"
+              (click)="finalizarTarea(row)"
+            >
+              <mat-icon>done</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row
+          mat-header-row
+          *matHeaderRowDef="displayedColumns"
+        ></mat-header-row>
+        <mat-row
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          [ngClass]="{ highlight: selectedRowIndex === row.id }"
+        ></mat-row
+      ></mat-table>
+    </div>
+  </mat-card-content>
+</mat-card>

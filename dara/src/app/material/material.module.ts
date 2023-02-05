@@ -62,6 +62,7 @@ const COMPONENTS = [
   MatSlideToggleModule,
   MatDividerModule,
   MatMenuModule,
+  MatCardModule
 ];
 
 @NgModule({

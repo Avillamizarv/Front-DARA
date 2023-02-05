@@ -1,0 +1,19 @@
+<mat-card>
+  <p>{{ data?.message }}</p>
+  <div *ngIf="data?.nombreProyecto">
+    <strong>Proyecto: </strong>
+    {{ data.nombreProyecto }}
+  </div>
+  <div *ngIf="data?.fecha">
+    <strong>Fecha: </strong>
+    {{ data.fecha | date : "dd/MM/yyyy" }}
+  </div>
+  <div *ngIf="data?.fechaRegistro">
+    <strong>Fecha registro: </strong>
+    {{ data.fechaRegistro | date : "dd/MM/yyyy" }}
+  </div>
+  <div *ngIf="data?.descripcion">
+    <strong>Descripción tarea: </strong>
+    {{ data.descripcion }}
+  </div>
+</mat-card>

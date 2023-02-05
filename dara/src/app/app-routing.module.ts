@@ -12,10 +12,17 @@ const routes: Routes = [
     path: 'dara',
     component: MainPageComponent,
   },
+  {
+    path: 'crud-dialog',
+    loadChildren: () =>
+      import('./common/components/crud-dialog/crud-dialog.module').then(
+        (m) => m.CrudDialogModule
+      ),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
