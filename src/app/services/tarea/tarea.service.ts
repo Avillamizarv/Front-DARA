@@ -32,7 +32,7 @@ export class TareaService {
       .post<TareaModel[]>(`${this.tareaURL}/getTareasByParametros`, {
         toDate: consulta.controls.fechaHasta.value,
         fromDate: consulta.controls.fechaDesde.value,
-        idProyecto: consulta.controls.idProyecto.value,
+        idProyecto: [consulta.controls.idProyecto.value],
       })
       .pipe(
         catchError((err) => {
