@@ -126,6 +126,41 @@ mat-form-field:not(.mat-form-field-invalid) {
 .container {
   min-height: 70vh;
 }
+.full-width-table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+@media screen and (max-width: 800px) {
+  .mat-table .mat-header-cell {
+    border: 10px solid;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  .mat-table .mat-row {
+    border-bottom: 5px solid #ddd;
+    display: block;
+  }
+
+  .mat-table .mat-cell {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 1em;
+    text-align: right;
+    font-weight: 200;
+    min-height: 30px;
+    margin-bottom: 4%;
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-bottom: 5%;
+  }
+}
+
 .mat-stroked-button {
   color: $main-color;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;

@@ -1,5 +1,5 @@
 <mat-card class="container">
-  <div class="actions-header">
+  <!-- <div class="actions-header">
     <button
       mat-raised-button
       class="derecha"
@@ -9,7 +9,7 @@
     >
       <mat-icon matPrefix>add</mat-icon>Agregar proyecto
     </button>
-  </div>
+  </div> -->
   <mat-card-content class="bordered">
     <!--Campo de filtro-->
     <form [formGroup]="form" *ngIf="form" class="formulario">
@@ -36,7 +36,7 @@
         matSort
       >
         <!-- Proyecto -->
-        <ng-container matColumnDef="proyecto">
+        <ng-container matColumnDef="nombre">
           <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
             Proyecto
           </mat-header-cell>
@@ -81,6 +81,7 @@
               color="primary"
               [title]="'Inactivar'"
               class="actionBtn"
+              (click)="inactivarProyecto(row)"
             >
               <mat-icon>clear</mat-icon>
             </button>

@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { CrudService } from 'src/app/common/services/crud.service';
 import { ProyectoModel } from 'src/app/model/proyecto-model';
 import { TareaModel } from 'src/app/model/tarea-model';
+import { ProyectoService } from 'src/app/services/proyecto/proyecto.service';
 import { TareaService } from 'src/app/services/tarea/tarea.service';
 import { FormTareaComponent } from '../form-tarea/form-tarea.component';
 import { GenericModalComponent } from '../generic-modal/generic-modal.component';
@@ -20,10 +22,8 @@ export class TareasComponent implements OnInit {
   /**
    * Vistas a componentes hijos para el paginador y ordenamiento de la tabla.
    * */
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
-  @ViewChild(MatSort)
-  sort!: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   /**
    * Variable que contiene la data de la tabla
@@ -56,6 +56,8 @@ export class TareasComponent implements OnInit {
 
   constructor(
     private tareaService: TareaService,
+    private proyectoService: ProyectoService,
+    private snackbar: MatSnackBar,
     private fb: UntypedFormBuilder,
     private crudService: CrudService
   ) {
@@ -80,6 +82,7 @@ export class TareasComponent implements OnInit {
    *  */
   ngAfterViewInit() {
     this.cargarTareas();
+    this.dataSource.sort = this.sort;
   }
 
   /**
@@ -103,6 +106,20 @@ export class TareasComponent implements OnInit {
         nombreProyecto: 'Prueba 1',
         fecha: new Date(),
         descripcion: 'Probando descripción',
+      },
+      {
+        id: 2,
+        idProyecto: 1,
+        nombreProyecto: 'Segunda prueba',
+        fecha: new Date(),
+        descripcion: 'A Probando descripción',
+      },
+      {
+        id: 3,
+        idProyecto: 1,
+        nombreProyecto: 'Adriana prueba',
+        fecha: new Date(),
+        descripcion: 'Sigo probando',
       },
     ]);
   }
@@ -280,5 +297,17 @@ export class TareasComponent implements OnInit {
           console.log('finalizando');
         }
       });
+  }
+
+  /**
+   * Función para mostrar snackbars de notificaciones
+   */
+  openSnackBar(message: string, tipo: string) {
+    this.snackbar.open(message, 'Ok', {
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: 5 * 1000,
+      panelClass: tipo,
+    });
   }
 }
