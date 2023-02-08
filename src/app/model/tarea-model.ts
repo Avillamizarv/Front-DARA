@@ -1,7 +1,9 @@
 export interface TareaModel {
     id: number;
     idProyecto: number;
-    nombreProyecto: string;
+    nombre: string;
     fecha: Date;
+    fechaRegistro: Date;
     descripcion: string;
+    estado: number;
   }

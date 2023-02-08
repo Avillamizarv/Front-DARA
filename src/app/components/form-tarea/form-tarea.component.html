@@ -10,6 +10,13 @@
           </mat-option>
         </mat-select>
         <mat-icon matPrefix>format_list_bulleted</mat-icon>
+        <mat-error *ngIf="form.controls.idProyecto.invalid">
+          {{
+            form.controls.idProyecto.getError("required")
+              ? "Este campo es obligatorio."
+              : "El valor ingresado no es válido."
+          }}
+        </mat-error>
       </mat-form-field>
     </div>
     <!-- Fecha -->
@@ -26,11 +33,15 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker color="primary"></mat-datepicker>
         <mat-error *ngIf="form.controls.fecha.invalid">
-          El valor ingresado no es válido.
+          {{
+            form.controls.fecha.getError("required")
+              ? "Este campo es obligatorio."
+              : "El valor ingresado no es válido."
+          }}
         </mat-error>
       </mat-form-field>
     </div>
-    
+
     <!--Descripción-->
     <div class="descripcion">
       <mat-form-field appearance="fill" class="formControl">
@@ -43,14 +54,14 @@
           [maxlength]="100"
         />
         <mat-icon matPrefix> bubble_chart </mat-icon>
+        <mat-error *ngIf="form.controls.descripcion.invalid">
+          {{
+            form.controls.descripcion.getError("required")
+              ? "Este campo es obligatorio."
+              : "El valor ingresado no es válido."
+          }}
+        </mat-error>
       </mat-form-field>
-    </div>
-
-    <br *ngIf="form.invalid && !form.hasError('camposRequeridos')" />
-    <div *ngIf="form.hasError('camposRequeridos')">
-      <mat-hint>
-        <small class="mat-error">{{ form.getError("camposRequeridos") }}</small>
-      </mat-hint>
     </div>
   </form>
 </mat-card>

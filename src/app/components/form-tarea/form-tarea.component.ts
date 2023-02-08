@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProyectoModel } from 'src/app/model/proyecto-model';
 
@@ -37,10 +37,13 @@ export class FormTareaComponent {
    * */
   buildForm() {
     this.form = this.fb.group({
-      id: [],
-      idProyecto: [],
-      fecha: [],
-      descripcion: [''],
+      id: [''],
+      idProyecto: ['', Validators.required],
+      fecha: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      fechaRegistro: [],
+      nombre: [''],
+      estado: [1],
     });
   }
 

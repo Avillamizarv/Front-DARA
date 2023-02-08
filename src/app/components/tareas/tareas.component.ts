@@ -69,12 +69,7 @@ export class TareasComponent implements OnInit {
   ngOnInit(): void {
     this.getProyectos();
     this.buildForm();
-    this.displayedColumns = [
-      'nombreProyecto',
-      'fecha',
-      'descripcion',
-      'actions',
-    ];
+    this.displayedColumns = ['nombreProyecto', 'fecha', 'descripcion', 'actions'];
   }
 
   /**
@@ -82,7 +77,6 @@ export class TareasComponent implements OnInit {
    *  */
   ngAfterViewInit() {
     this.cargarTareas();
-    this.dataSource.sort = this.sort;
   }
 
   /**
@@ -99,29 +93,15 @@ export class TareasComponent implements OnInit {
    * Carga todas las tareas sin filtro
    */
   cargarTareas() {
-    this.dataSource = new MatTableDataSource([
-      {
-        id: 1,
-        idProyecto: 1,
-        nombreProyecto: 'Prueba 1',
-        fecha: new Date(),
-        descripcion: 'Probando descripción',
-      },
-      {
-        id: 2,
-        idProyecto: 1,
-        nombreProyecto: 'Segunda prueba',
-        fecha: new Date(),
-        descripcion: 'A Probando descripción',
-      },
-      {
-        id: 3,
-        idProyecto: 1,
-        nombreProyecto: 'Adriana prueba',
-        fecha: new Date(),
-        descripcion: 'Sigo probando',
-      },
-    ]);
+    this.tareaService.getTareaList().subscribe((res) => {
+      if (res != null) {
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.paginator = this.paginator;
+      } else {
+        this.openSnackBar('Usted no tiene tareas registradas.', 'error');
+      }
+      this.dataSource.sort = this.sort;
+    });
   }
 
   /**
@@ -186,6 +166,7 @@ export class TareasComponent implements OnInit {
    */
   limpiarFormulario() {
     this.form.reset();
+    this.cargarTareas();
   }
 
   /**Función para agregar una tarea */
@@ -204,23 +185,19 @@ export class TareasComponent implements OnInit {
       })
       .subscribe((res) => {
         if (res.estado) {
-          console.log('va a agregar');
-          // const publicacion = res.data as PublicacionAdopcionModel;
-          // publicacion.idUsuario = 1;
-          // this.servicePub.addPublicacion(publicacion).subscribe((response) => {
-          //   if (response) {
-          //     this.openSnackBar(
-          //       'Se realizó el registro de su publicación exitosamente.',
-          //       'success'
-          //     );
-          //   }
-          //   this.crudService.close(res.dialogRef);
-          //   if (!this.misPubsMode) {
-          //     this.getAllPubs();
-          //   } else {
-          //     this.getAllPubsByUser();
-          //   }
-          // });
+          res.data.fechaRegistro = new Date();
+          this.tareaService.createTarea(res.data).subscribe((response) => {
+            if (response) {
+              this.openSnackBar(
+                'Se realizó el registro de su tarea exitosamente.',
+                'success'
+              );
+              this.limpiarFormulario();
+            } else {
+              this.openSnackBar('Su tarea no se pudo registrar.', 'error');
+            }
+            this.crudService.close(res.dialogRef);
+          });
         }
       });
   }
@@ -234,7 +211,7 @@ export class TareasComponent implements OnInit {
         component: GenericModalComponent,
         dataComponent: {
           editMode: true,
-          nombreProyecto: row.nombreProyecto,
+          nombreProyecto: row.nombre,
           fecha: row.fecha,
           descripcion: row.descripcion,
           message: '¿Está seguro que desea inactivar esta tarea?',
@@ -247,17 +224,16 @@ export class TareasComponent implements OnInit {
       })
       .subscribe((res) => {
         if (res.estado) {
-          // this.servicePub.deletePublicacion(idPublicacion).subscribe((res) => {
-          //   if (res) {
-          //     this.openSnackBar(
-          //       'Se eliminó la publicación exitosamente.',
-          //       'success'
-          //     );
-          //   }
-          //   this.crudService.close(resp.dialogRef);
-          //   this.recargar.emit(true);
-          // });
-          console.log('inactivando');
+          this.tareaService.inactiveTarea(row.id).subscribe((resp) => {
+            if (resp) {
+              this.openSnackBar(
+                'Se inactivó la tarea exitosamente.',
+                'success'
+              );
+            }
+            this.crudService.close(res.dialogRef);
+            this.cargarTareas();
+          });
         }
       });
   }
@@ -271,7 +247,7 @@ export class TareasComponent implements OnInit {
         component: GenericModalComponent,
         dataComponent: {
           editMode: true,
-          nombreProyecto: row.nombreProyecto,
+          nombreProyecto: row.nombre,
           fecha: row.fecha,
           descripcion: row.descripcion,
           message: '¿Está seguro que desea finalizar esta tarea?',
@@ -284,17 +260,16 @@ export class TareasComponent implements OnInit {
       })
       .subscribe((res) => {
         if (res.estado) {
-          // this.servicePub.deletePublicacion(idPublicacion).subscribe((res) => {
-          //   if (res) {
-          //     this.openSnackBar(
-          //       'Se eliminó la publicación exitosamente.',
-          //       'success'
-          //     );
-          //   }
-          //   this.crudService.close(resp.dialogRef);
-          //   this.recargar.emit(true);
-          // });
-          console.log('finalizando');
+          this.tareaService.endTarea(row.id).subscribe((resp) => {
+            if (resp) {
+              this.openSnackBar(
+                'Se finalizó la tarea exitosamente.',
+                'success'
+              );
+            }
+            this.crudService.close(res.dialogRef);
+            this.cargarTareas();
+          });
         }
       });
   }
