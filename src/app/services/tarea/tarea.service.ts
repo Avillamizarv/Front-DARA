@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { ConsultaModel } from 'src/app/model/consulta-model';
 import { TareaModel } from 'src/app/model/tarea-model';
 
 @Injectable({
@@ -33,6 +32,7 @@ export class TareaService {
         toDate: consulta.controls.fechaHasta.value,
         fromDate: consulta.controls.fechaDesde.value,
         idProyecto: [consulta.controls.idProyecto.value],
+        descripcionTarea: consulta.controls.descripcion.value,
       })
       .pipe(
         catchError((err) => {
