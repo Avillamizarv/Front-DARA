@@ -7,16 +7,16 @@ import { ProyectoModel } from 'src/app/model/proyecto-model';
   providedIn: 'root',
 })
 export class ProyectoService {
-  private userURL = 'http://localhost:8080/api/user';
+  private projectURL = 'https://gestorproyectos-production.up.railway.app/gestorProyectos/api/tarea';
 
   constructor(private httpClient: HttpClient) {}
 
   /**
    * Lista de los proyectos.
    */
-  getProyectoList(filtro?: String) {
+  getProyectoList() {
     return this.httpClient.get<ProyectoModel[]>(
-      `${this.userURL}/getProjects/${filtro}`
+      `${this.projectURL}/getAllProyectos`
     );
   }
 
@@ -24,6 +24,6 @@ export class ProyectoService {
    * Inactivar una proyecto.
    */
   inactiveTarea(id: number): Observable<Object> {
-    return this.httpClient.delete(`${this.userURL}/inactiveProject${id}`);
+    return this.httpClient.delete(`${this.projectURL}/inactiveProject${id}`);
   }
 }

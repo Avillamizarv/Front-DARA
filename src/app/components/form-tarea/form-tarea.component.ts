@@ -1,7 +1,12 @@
 import { Component, Inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProyectoModel } from 'src/app/model/proyecto-model';
+import { ProyectoService } from 'src/app/services/proyecto/proyecto.service';
 
 @Component({
   selector: 'app-form-tarea',
@@ -10,6 +15,7 @@ import { ProyectoModel } from 'src/app/model/proyecto-model';
 })
 export class FormTareaComponent {
   constructor(
+    private proyectoService: ProyectoService,
     private fb: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA)
     public data: {
@@ -51,10 +57,11 @@ export class FormTareaComponent {
    * Función para obtener la lista de proyectos
    * */
   getProyectos() {
-    this.proyectos = [
-      { nombre: 'Universidad', id: 1, fechaRegistro: new Date() },
-      { nombre: 'Trabajo de grado', id: 2, fechaRegistro: new Date() },
-    ];
+    this.proyectoService.getProyectoList().subscribe((res) => {
+      if (res) {
+        this.proyectos = res;
+      }
+    });
   }
 
   limpiarFormulario() {

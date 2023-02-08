@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, Observable, tap, throwError } from 'rxjs';
+import { ConsultaModel } from 'src/app/model/consulta-model';
 import { TareaModel } from 'src/app/model/tarea-model';
 
 @Injectable({
@@ -20,6 +22,32 @@ export class TareaService {
     return this.httpClient.get<TareaModel[]>(
       `${this.tareaURL}/getAllSinFinalizadosNiInactivos`
     );
+  }
+
+  /**
+   * Función para listar tareas según criterios de consulta
+   */
+  consultTareas(consulta: FormGroup) {
+    return this.httpClient
+      .post<TareaModel[]>(`${this.tareaURL}/getTareasByParametros`, {
+        toDate: consulta.controls.fechaHasta.value,
+        fromDate: consulta.controls.fechaDesde.value,
+        idProyecto: consulta.controls.idProyecto.value,
+      })
+      .pipe(
+        catchError((err) => {
+          this.openSnackBar('Hubo un error interno.', 'error');
+          return throwError(err);
+        }),
+        tap((res) => {
+          if (res.length < 1) {
+            this.openSnackBar(
+              'No se encontraron tareas con los criterios de búsqueda ingresados.',
+              'error'
+            );
+          }
+        })
+      );
   }
 
   /**

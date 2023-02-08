@@ -24,7 +24,7 @@
                   *ngFor="let proyecto of proyectos"
                   [value]="proyecto.id"
                 >
-                  {{ proyecto.nombre }}
+                  {{ proyecto.nombre | uppercase }}
                 </mat-option>
               </mat-select>
               <mat-icon matPrefix>format_list_bulleted</mat-icon>
@@ -150,7 +150,7 @@
             Fecha
           </mat-header-cell>
           <mat-cell mat-cell *matCellDef="let row" [attr.data-label]="'Fecha'">
-            {{ row.fecha | date: "dd/MM/yyyy" }}
+            {{ row.fecha | date : "dd/MM/yyyy" }}
           </mat-cell>
         </ng-container>
         <!-- Descripción -->

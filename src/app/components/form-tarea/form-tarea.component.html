@@ -6,7 +6,7 @@
         <mat-label>Proyecto</mat-label>
         <mat-select formControlName="idProyecto">
           <mat-option *ngFor="let proyecto of proyectos" [value]="proyecto.id">
-            {{ proyecto.nombre }}
+            {{ proyecto.nombre | uppercase }}
           </mat-option>
         </mat-select>
         <mat-icon matPrefix>format_list_bulleted</mat-icon>

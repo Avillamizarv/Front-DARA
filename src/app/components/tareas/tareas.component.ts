@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { CrudService } from 'src/app/common/services/crud.service';
+import { ConsultaModel } from 'src/app/model/consulta-model';
 import { ProyectoModel } from 'src/app/model/proyecto-model';
 import { TareaModel } from 'src/app/model/tarea-model';
 import { ProyectoService } from 'src/app/services/proyecto/proyecto.service';
@@ -29,6 +30,11 @@ export class TareasComponent implements OnInit {
    * Variable que contiene la data de la tabla
    */
   dataSource = new MatTableDataSource<TareaModel>();
+
+  /**
+   * Objeto que va a contener los criterios de búsqueda
+   */
+  searchForm: ConsultaModel;
 
   /**
    * Variable que contiene el formulario de búsqueda
@@ -69,7 +75,12 @@ export class TareasComponent implements OnInit {
   ngOnInit(): void {
     this.getProyectos();
     this.buildForm();
-    this.displayedColumns = ['nombreProyecto', 'fecha', 'descripcion', 'actions'];
+    this.displayedColumns = [
+      'nombreProyecto',
+      'fecha',
+      'descripcion',
+      'actions',
+    ];
   }
 
   /**
@@ -83,10 +94,11 @@ export class TareasComponent implements OnInit {
    * Función para obtener la lista de proyectos
    * */
   getProyectos() {
-    this.proyectos = [
-      { nombre: 'Universidad', id: 1, fechaRegistro: new Date() },
-      { nombre: 'Trabajo de grado', id: 2, fechaRegistro: new Date() },
-    ];
+    this.proyectoService.getProyectoList().subscribe((res) => {
+      if (res) {
+        this.proyectos = res;
+      }
+    });
   }
 
   /**
@@ -109,14 +121,20 @@ export class TareasComponent implements OnInit {
    */
   buscar() {
     if (this.validateSearchForm()) {
-      this.tareaService.getTareaList().subscribe({
+      // this.searchForm.toDate = this.form.controls.fechaHasta.value ?? '';
+      // this.searchForm.fromDate = this.form.controls.fechaDesde.value ?? '';
+      // this.searchForm.idProyecto = this.form.controls.idProyecto.value ?? '';
+      // this.searchForm.descripcion = this.form.controls.descripcion.value ?? '';
+      // 
+      this.tareaService.consultTareas(this.form).subscribe({
         next: (res) => {
           this.dataSource = new MatTableDataSource(res ? res : []);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
+          this.openSnackBar('Consulta realizada exitosamente', 'success');
         },
         error: (err) => {
-          //this.dataSource = new MatTableDataSource([]);
+          this.dataSource = new MatTableDataSource([]);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         },

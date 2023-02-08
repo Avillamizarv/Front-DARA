@@ -80,20 +80,27 @@ export class ProyectosComponent {
    * Función para cargar los proyectos filtrados o sin filtrar
    */
   cargarProyectos(filtro?: String) {
-    this.dataSource = new MatTableDataSource([
-      { id: 1, nombre: 'Mi proyecto 1', fechaRegistro: new Date() },
-      { id: 2, nombre: 'Mi proyecto 2', fechaRegistro: new Date() },
-      {
-        id: 3,
-        nombre: 'Adri mi proyecto 1',
-        fechaRegistro: new Date(),
-      },
-      {
-        id: 1,
-        nombre: 'último proyecto 1',
-        fechaRegistro: new Date(),
-      },
-    ]);
+    this.proyectoService.getProyectoList().subscribe((res) => {
+      if (res) {
+        this.dataSource = new MatTableDataSource(res ? res : []);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+    });
+    // this.dataSource = new MatTableDataSource([
+    //   { id: 1, nombre: 'Mi proyecto 1', fechaRegistro: new Date() },
+    //   { id: 2, nombre: 'Mi proyecto 2', fechaRegistro: new Date() },
+    //   {
+    //     id: 3,
+    //     nombre: 'Adri mi proyecto 1',
+    //     fechaRegistro: new Date(),
+    //   },
+    //   {
+    //     id: 1,
+    //     nombre: 'último proyecto 1',
+    //     fechaRegistro: new Date(),
+    //   },
+    // ]);
     // this.proyectoService.getProyectoList(filtro).subscribe({
     //   next: (res) => {
     //     this.dataSource = new MatTableDataSource(
