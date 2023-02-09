@@ -54,7 +54,7 @@ export class ProyectosComponent {
     this.form = this.fb.group({
       filtro: [],
     });
-    this.displayedColumns = ['nombre', 'fechaRegistro', 'actions'];
+    this.displayedColumns = ['nombre', 'fechaRegistro'];
     this.listenFilterChanges();
   }
 

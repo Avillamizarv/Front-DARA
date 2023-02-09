@@ -92,6 +92,19 @@
             </mat-form-field>
           </div>
 
+          <!--Estado de la tarea-->
+          <div class="estado">
+            <mat-radio-group
+              aria-label="Seleccione una opción"
+              formControlName="estado"
+            >
+              <mat-radio-button [value]="'ACTIVA'">Activas</mat-radio-button>
+              <mat-radio-button [value]="'FINALIZADA'"
+                >Finalizadas</mat-radio-button
+              >
+            </mat-radio-group>
+          </div>
+
           <br *ngIf="form.invalid && !form.hasError('camposRequeridos')" />
           <div *ngIf="form.hasError('camposRequeridos')">
             <mat-hint>
@@ -124,7 +137,11 @@
       </div>
     </mat-card>
     <!-- Table -->
+
     <div class="row mat-elevation-z8">
+      <mat-card-title class="title-table">
+        Tareas {{ activasMode ? "activas" : "finalizadas" }}
+      </mat-card-title>
       <mat-table
         mat-table
         class="full-width-table"
@@ -167,7 +184,7 @@
           </mat-cell>
         </ng-container>
         <!-- Actions -->
-        <ng-container matColumnDef="actions">
+        <ng-container matColumnDef="actions" *ngIf="activasMode">
           <mat-header-cell
             mat-header-cell
             *matHeaderCellDef

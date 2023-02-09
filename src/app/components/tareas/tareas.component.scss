@@ -1,4 +1,3 @@
-
 .formulario {
   display: grid;
   grid-template-columns: repeat(4, minmax(170px, auto));
@@ -15,9 +14,14 @@
   justify-content: center;
   margin-top: 16px;
   button:first-child {
-    color:  #128178;
-    border-color:  #128178;
+    color: #128178;
+    border-color: #128178;
   }
+}
+.title-table {
+  padding-top: 15px;
+  text-align: center;
+  color: #128178;
 }
 @media screen and (max-width: 870px) {
   .formulario {

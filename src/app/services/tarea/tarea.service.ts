@@ -33,6 +33,7 @@ export class TareaService {
         fromDate: consulta.controls.fechaDesde.value,
         idProyecto: [consulta.controls.idProyecto.value],
         descripcionTarea: consulta.controls.descripcion.value,
+        estado: consulta.controls.estado.value,
       })
       .pipe(
         catchError((err) => {

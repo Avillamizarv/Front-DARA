@@ -46,6 +46,11 @@ export class TareasComponent implements OnInit {
   subscriptionCrear: Subscription;
 
   /**
+   * Variable que indica si la tabla contiene tareas finalizadas o activas
+   */
+  activasMode: boolean = true;
+
+  /**
    * Configuraciones de la tabla
    * */
   paginationGroups: number[];
@@ -117,6 +122,18 @@ export class TareasComponent implements OnInit {
     if (this.validateSearchForm()) {
       this.tareaService.consultTareas(this.form).subscribe({
         next: (res) => {
+          if (this.form.controls.estado.value == 'FINALIZADA') {
+            this.activasMode = false;
+            this.displayedColumns = ['nombreProyecto', 'fecha', 'descripcion'];
+          } else {
+            this.activasMode = true;
+            this.displayedColumns = [
+              'nombreProyecto',
+              'fecha',
+              'descripcion',
+              'actions',
+            ];
+          }
           this.dataSource = new MatTableDataSource(res ? res : []);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
@@ -165,6 +182,7 @@ export class TareasComponent implements OnInit {
       fechaDesde: [],
       fechaHasta: [],
       descripcion: [''],
+      estado: ['ACTIVA'],
     });
   }
 
@@ -173,6 +191,14 @@ export class TareasComponent implements OnInit {
    */
   limpiarFormulario() {
     this.form.reset();
+    this.form.controls.estado.setValue('ACTIVA');
+    this.activasMode = true;
+    this.displayedColumns = [
+      'nombreProyecto',
+      'fecha',
+      'descripcion',
+      'actions',
+    ];
     this.cargarTareas();
   }
 

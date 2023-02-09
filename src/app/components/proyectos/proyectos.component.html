@@ -14,7 +14,7 @@
     <!--Campo de filtro-->
     <form [formGroup]="form" *ngIf="form" class="formulario">
       <!--Descripción-->
-      <div class="descripcion">
+      <!-- <div class="descripcion">
         <mat-form-field appearance="fill" class="formControl">
           <mat-label>Filtrar</mat-label>
           <input
@@ -25,7 +25,7 @@
             [maxlength]="100"
           />
         </mat-form-field>
-      </div>
+      </div> -->
     </form>
     <!-- Table -->
     <div class="row mat-elevation-z8">
@@ -63,7 +63,7 @@
         </ng-container>
 
         <!-- Actions -->
-        <ng-container matColumnDef="actions">
+        <!-- <ng-container matColumnDef="actions">
           <mat-header-cell
             mat-header-cell
             *matHeaderCellDef
@@ -86,7 +86,7 @@
               <mat-icon>clear</mat-icon>
             </button>
           </mat-cell>
-        </ng-container>
+        </ng-container> -->
         <mat-header-row
           mat-header-row
           *matHeaderRowDef="displayedColumns"
